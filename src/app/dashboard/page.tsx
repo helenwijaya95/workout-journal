@@ -3,7 +3,11 @@ import { redirect } from "next/navigation";
 import { signOut } from "@/app/auth/actions";
 import { StatsCards } from "./components/StatsCards";
 import { DashboardTabs } from "./components/DashboardTabs";
-import { groupWorkoutsByWeek, getWeekStart } from "@/lib/workout-utils";
+import {
+  groupWorkoutsByWeek,
+  getWeekStart,
+  getWeekEnd,
+} from "@/lib/workout-utils";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -33,6 +37,18 @@ export default async function DashboardPage() {
   const currentWeek =
     weekGroups.find((w) => w.weekStart === todayWeekStart) ?? null;
 
+  const debriefsWithStaleness = (debriefs ?? []).map((debrief) => {
+    const weekWorkouts = (workouts ?? []).filter((w) => {
+      const weekEnd = getWeekEnd(debrief.week_start);
+      return w.workout_date >= debrief.week_start && w.workout_date <= weekEnd;
+    });
+
+    return {
+      ...debrief,
+      isStale: weekWorkouts.length !== debrief.total_sessions,
+    };
+  });
+
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-2xl mx-auto px-4 py-8">
@@ -60,7 +76,7 @@ export default async function DashboardPage() {
         <DashboardTabs
           weekGroups={weekGroups}
           workouts={workouts ?? []}
-          debriefs={debriefs ?? []}
+          debriefs={debriefsWithStaleness}
         />
       </div>
     </main>

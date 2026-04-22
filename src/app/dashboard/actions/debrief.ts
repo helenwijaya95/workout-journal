@@ -161,9 +161,10 @@ try {
     const totalMinutes = workouts.reduce((sum, w) => sum + w.duration_minutes, 0)
     const avgIntensity = workouts.reduce((sum, w) => sum + w.intensity, 0) / workouts.length
 
-    const { data: debrief, error: insertError } = await supabase
+    const { data: debrief, error: upsertError } = await supabase
       .from('ai_debriefs')
-      .insert({
+      .upsert(
+      {
         user_id: user.id,
         week_start: weekStart,
         summary: parsed.summary,
@@ -171,11 +172,14 @@ try {
         total_sessions: workouts.length,
         total_minutes: totalMinutes,
         avg_intensity: Math.round(avgIntensity * 10) / 10,
-      })
-      .select()
-      .single()
+      },
+      { onConflict: 'user_id,week_start' }
+    )
+    .select()
+    .single()
 
-    if (insertError) return { error: `Failed to save debrief: ${insertError.message}` }
+    if (upsertError) return { error: `Failed to save debrief: ${upsertError.message}` }
+
 
     revalidatePath('/dashboard')
     return { data: debrief }
@@ -192,4 +196,93 @@ try {
 
     return { error: 'Failed to generate debrief. Please try again.' }
   }
+}
+
+export async function regenerateDebrief(weekStart: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) return { error: 'Not authenticated' }
+
+  const weekEnd = getWeekEnd(weekStart)
+
+  // fetch current workouts for this week
+  const { data: workouts, error: fetchError } = await supabase
+    .from('workouts')
+    .select('*')
+    .eq('user_id', user.id)
+    .gte('workout_date', weekStart)
+    .lte('workout_date', weekEnd)
+    .order('workout_date', { ascending: true })
+
+  if (fetchError) return { error: `Failed to fetch workouts: ${fetchError.message}` }
+  if (!workouts || workouts.length === 0) {
+    return { error: 'No workouts found for this week' }
+  }
+
+  // call AI first — only delete old debrief if AI succeeds
+  // this prevents data loss if the AI call fails
+  let content: string
+  try {
+    content = await callGeminiWithRetry(buildPrompt(workouts, weekStart))
+  } catch (err) {
+    const message = err instanceof Error ? err.message.toLowerCase() : ''
+    if (message.includes('429') || message.includes('quota') || message.includes('resource exhausted')) {
+      return { error: 'AI quota exceeded. Please try again in a few minutes.' }
+    }
+    if (message.includes('busy') || message.includes('overloaded') || message.includes('503')) {
+      return { error: 'AI is currently busy. Please try again in a moment.' }
+    }
+    return { error: 'Failed to generate debrief. Please try again.' }
+  }
+
+  // parse response
+  const cleaned = content
+    .replace(/```json\n?/g, '')
+    .replace(/```\n?/g, '')
+    .trim()
+
+  let parsed: {
+    summary: string
+    insights: {
+      highlights: string[]
+      flags: string[]
+      suggestions: string[]
+    }
+  }
+
+  try {
+    parsed = JSON.parse(cleaned)
+  } catch {
+    return { error: 'AI returned unexpected format. Please try again.' }
+  }
+
+  const totalMinutes = workouts.reduce((sum, w) => sum + w.duration_minutes, 0)
+  const avgIntensity = workouts.reduce((sum, w) => sum + w.intensity, 0) / workouts.length
+
+  // upsert — inserts if not exists, updates if it does
+  // eliminates the race condition between delete and insert
+  const { data: debrief, error: upsertError } = await supabase
+    .from('ai_debriefs')
+    .upsert(
+      {
+        user_id: user.id,
+        week_start: weekStart,
+        summary: parsed.summary,
+        insights: parsed.insights,
+        total_sessions: workouts.length,
+        total_minutes: totalMinutes,
+        avg_intensity: Math.round(avgIntensity * 10) / 10,
+      },
+      {
+        onConflict: 'user_id,week_start', // matches your unique constraint
+      }
+    )
+    .select()
+    .single()
+
+  if (upsertError) return { error: `Failed to save debrief: ${upsertError.message}` }
+
+  revalidatePath('/dashboard')
+  return { data: debrief }
 }

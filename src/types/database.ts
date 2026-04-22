@@ -33,4 +33,5 @@ export interface AiDebrief {
   total_minutes: number
   avg_intensity: number | null
   created_at: string
+  isStale?: boolean  // client-side only, not in DB
 }

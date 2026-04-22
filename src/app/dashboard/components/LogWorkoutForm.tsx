@@ -101,7 +101,7 @@ export function LogWorkoutForm({ onSuccess }: LogWorkoutFormProps) {
             required
             defaultValue={today}
             max={today}
-            className="bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-500 transition-colors"
+            className="bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-500 transition-colors cursor-pointer scheme-dark"
           />
         </div>
       </div>

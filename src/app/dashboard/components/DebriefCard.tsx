@@ -1,6 +1,9 @@
 "use client";
 import { useState, useRef } from "react";
-import { generateDebrief } from "@/app/dashboard/actions/debrief";
+import {
+  generateDebrief,
+  regenerateDebrief,
+} from "@/app/dashboard/actions/debrief";
 import { AiDebrief } from "@/types/database";
 import { WeekGroup } from "@/lib/workout-utils";
 
@@ -11,24 +14,27 @@ interface DebriefCardProps {
 
 export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
   const [debrief, setDebrief] = useState<AiDebrief | null>(existingDebrief);
+  const [isStale, setIsStale] = useState(existingDebrief?.isStale ?? false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const isCallingRef = useRef(false); // ← ref is synchronous, unlike state
+  const isCallingRef = useRef(false);
 
-  const handleGenerate = async () => {
-    // ref check is synchronous — guaranteed to prevent double calls
+  const handleGenerate = async (regenerate = false) => {
     if (isCallingRef.current || loading) return;
     isCallingRef.current = true;
-
     setLoading(true);
     setError(null);
 
     try {
-      const result = await generateDebrief(weekGroup.weekStart);
+      const result = regenerate
+        ? await regenerateDebrief(weekGroup.weekStart)
+        : await generateDebrief(weekGroup.weekStart);
+
       if (result.error) {
         setError(result.error);
       } else if (result.data) {
         setDebrief(result.data as AiDebrief);
+        setIsStale(false);
       }
     } finally {
       setLoading(false);
@@ -38,6 +44,7 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-4">
+      {/* Week header */}
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-sm font-medium text-white">
@@ -54,6 +61,26 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
         </div>
       </div>
 
+      {/* Stale warning banner */}
+      {debrief && isStale && (
+        <div className="flex items-center justify-between gap-4 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3 mb-4">
+          <div className="flex items-center gap-2">
+            <span className="text-amber-400 text-sm">⚠</span>
+            <p className="text-xs text-amber-400">
+              You've added workouts since this debrief was generated.
+            </p>
+          </div>
+          <button
+            onClick={() => handleGenerate(true)}
+            disabled={loading}
+            className="text-xs text-amber-400 hover:text-amber-300 border border-amber-500/30 hover:border-amber-400 px-3 py-1.5 rounded-lg transition-all shrink-0"
+          >
+            {loading ? "Updating..." : "Regenerate"}
+          </button>
+        </div>
+      )}
+
+      {/* Debrief content */}
       {debrief ? (
         <div className="flex flex-col gap-4">
           <p className="text-sm text-slate-300 leading-relaxed">
@@ -102,6 +129,17 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
               </p>
             </div>
           )}
+
+          {/* Regenerate button at the bottom for non-stale debriefs too */}
+          {!isStale && (
+            <button
+              onClick={() => handleGenerate(true)}
+              disabled={loading}
+              className="text-xs text-slate-600 hover:text-slate-400 transition-all self-end mt-2"
+            >
+              {loading ? "Regenerating..." : "Regenerate debrief"}
+            </button>
+          )}
         </div>
       ) : (
         <div className="flex flex-col items-center py-4 gap-4">
@@ -113,10 +151,10 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
 
           {weekGroup.totalSessions > 0 && (
             <button
-              onClick={handleGenerate}
-              disabled={loading || isCallingRef.current}
+              onClick={() => handleGenerate(false)}
+              disabled={loading}
               className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${
-                loading || isCallingRef.current
+                loading
                   ? "bg-slate-800 text-slate-500 cursor-not-allowed"
                   : "bg-emerald-500 text-white hover:bg-emerald-400 active:scale-95"
               }`}
@@ -141,9 +179,9 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
             <span>{error}</span>
           </div>
           <button
-            onClick={handleGenerate}
+            onClick={() => handleGenerate(debrief !== null)}
             disabled={loading}
-            className="text-xs text-slate-400 hover:text-white border border-slate-700 hover:border-slate-500 px-3 py-1.5 rounded-lg transition-all shrink-0"
+            className="text-xs text-slate-400 hover:text-white border border-slate-700 px-3 py-1.5 rounded-lg transition-all shrink-0"
           >
             Retry
           </button>
