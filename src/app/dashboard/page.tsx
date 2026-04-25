@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { signOut } from "@/app/auth/actions";
 import { StatsCards } from "./components/StatsCards";
 import { DashboardTabs } from "./components/DashboardTabs";
+import { WorkoutChart } from "./components/workoutChart";
 import {
   groupWorkoutsByWeek,
   getWeekStart,
@@ -72,7 +73,11 @@ export default async function DashboardPage() {
         </div>
 
         <StatsCards currentWeek={currentWeek} allWorkouts={workouts ?? []} />
-
+        {weekGroups.length > 0 && (
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+            <WorkoutChart weekGroups={weekGroups} />
+          </div>
+        )}
         <DashboardTabs
           weekGroups={weekGroups}
           workouts={workouts ?? []}
