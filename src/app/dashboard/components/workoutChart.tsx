@@ -9,7 +9,6 @@ import {
   Cell,
 } from "recharts";
 import { WeekGroup } from "@/lib/workout-utils";
-
 interface WorkoutChartProps {
   weekGroups: WeekGroup[];
 }
@@ -23,15 +22,10 @@ interface ChartData {
 }
 
 // custom tooltip that shows on hover
-function CustomTooltip({
-  active,
-  payload,
-  label,
-}: {
-  active?: boolean;
-  payload?: { value: number; name: string }[];
-  label?: string;
-}) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CustomTooltip(props: any) {
+  const { active, payload, label } = props;
+
   if (!active || !payload?.length) return null;
 
   const data = payload[0].payload as ChartData;
