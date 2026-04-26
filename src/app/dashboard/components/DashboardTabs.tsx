@@ -31,15 +31,15 @@ export function DashboardTabs({
   return (
     <div>
       {/* Tab buttons */}
-      <div className="flex gap-1 mb-6 bg-slate-900 border border-slate-800 rounded-xl p-1">
+      <div className="flex gap-1 mb-6 bg-surface border border-slate-800 rounded-xl p-1">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.id
-                ? "bg-slate-800 text-white"
-                : "text-slate-500 hover:text-slate-300"
+                ? "bg-card text-white"
+                : "text-primary-text0 hover:text-slate-300"
             }`}
           >
             {tab.label}
@@ -48,7 +48,7 @@ export function DashboardTabs({
       </div>
 
       {activeTab === "log" && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div className="bg-surface border border-slate-800 rounded-2xl p-6">
           <LogWorkoutForm onSuccess={() => setActiveTab("history")} />
         </div>
       )}

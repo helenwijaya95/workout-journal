@@ -43,19 +43,19 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-4">
+    <div className="bg-surface border border-slate-800 rounded-2xl p-6 mb-4">
       {/* Week header */}
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-sm font-medium text-white">
             {weekGroup.weekLabel}
           </p>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-primary-text0 mt-0.5">
             {weekGroup.totalSessions} sessions · {weekGroup.totalMinutes} mins ·
             avg {weekGroup.avgIntensity}/10
           </p>
         </div>
-        <div className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-lg">
+        <div className="flex items-center gap-2 bg-card px-3 py-1.5 rounded-lg">
           <span style={{ fontSize: "14px" }}>✨</span>
           <span className="text-xs font-medium text-slate-300">AI debrief</span>
         </div>
@@ -89,13 +89,13 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
 
           {debrief.insights.highlights?.length > 0 && (
             <div>
-              <p className="text-xs font-medium text-emerald-400 uppercase tracking-wider mb-2">
+              <p className="text-xs font-medium text-primary-light uppercase tracking-wider mb-2">
                 Highlights
               </p>
               <div className="flex flex-col gap-1.5">
                 {debrief.insights.highlights.map((h, i) => (
                   <div key={i} className="flex gap-2 text-sm text-slate-300">
-                    <span className="text-emerald-400 shrink-0">↑</span>
+                    <span className="text-primary-light shrink-0">↑</span>
                     <span>{h}</span>
                   </div>
                 ))}
@@ -120,7 +120,7 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
           )}
 
           {debrief.insights.suggestions?.length > 0 && (
-            <div className="bg-slate-800 rounded-xl p-4">
+            <div className="bg-card rounded-xl p-4">
               <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
                 Next week
               </p>
@@ -155,8 +155,8 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
               disabled={loading}
               className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${
                 loading
-                  ? "bg-slate-800 text-slate-500 cursor-not-allowed"
-                  : "bg-emerald-500 text-white hover:bg-emerald-400 active:scale-95"
+                  ? "bg-card text-primary-text0 cursor-not-allowed"
+                  : "bg-primary text-white hover:bg-primary-hover active:scale-95"
               }`}
             >
               {loading ? (

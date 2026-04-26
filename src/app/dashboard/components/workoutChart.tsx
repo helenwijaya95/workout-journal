@@ -31,9 +31,9 @@ function CustomTooltip(props: any) {
   const data = payload[0].payload as ChartData;
 
   return (
-    <div className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm shadow-xl">
+    <div className="bg-card border border-slate-700 rounded-xl px-4 py-3 text-sm shadow-xl">
       <p className="text-white font-medium mb-1">{label}</p>
-      <p className="text-emerald-400">
+      <p className="text-primary-light">
         {data.sessions} session{data.sessions !== 1 ? "s" : ""}
       </p>
       <p className="text-slate-400">{data.minutes} mins total</p>
@@ -69,7 +69,7 @@ export function WorkoutChart({ weekGroups }: WorkoutChartProps) {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-medium text-white">Sessions per week</h3>
-        <span className="text-xs text-slate-500">
+        <span className="text-xs text-primary-text0">
           Last {chartData.length} weeks
         </span>
       </div>
@@ -108,10 +108,10 @@ export function WorkoutChart({ weekGroups }: WorkoutChartProps) {
                 key={index}
                 fill={
                   entry.isCurrentWeek
-                    ? "#10b981" // emerald for current week
-                    : "#1e293b" // slate for past weeks
+                    ? "#6366f1" // indigo for current week
+                    : "#161D35" // slate for past weeks
                 }
-                stroke={entry.isCurrentWeek ? "#10b981" : "#334155"}
+                stroke={entry.isCurrentWeek ? "#6366f1" : "#1E2847"}
                 strokeWidth={1}
               />
             ))}
@@ -122,12 +122,12 @@ export function WorkoutChart({ weekGroups }: WorkoutChartProps) {
       {/* legend */}
       <div className="flex items-center gap-4 mt-2 justify-end">
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm bg-emerald-500" />
-          <span className="text-xs text-slate-500">Current week</span>
+          <div className="w-3 h-3 rounded-sm bg-primary" />
+          <span className="text-xs text-primary-text0">Current week</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm bg-slate-700 border border-slate-600" />
-          <span className="text-xs text-slate-500">Past weeks</span>
+          <span className="text-xs text-primary-text0">Past weeks</span>
         </div>
       </div>
     </div>

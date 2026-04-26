@@ -6,7 +6,6 @@ interface StatsCardsProps {
 }
 
 export function StatsCards({ currentWeek, allWorkouts }: StatsCardsProps) {
-  const totalWorkouts = allWorkouts.length;
   const totalMinutes = allWorkouts.reduce(
     (sum, w) => sum + w.duration_minutes,
     0,
@@ -47,21 +46,21 @@ export function StatsCards({ currentWeek, allWorkouts }: StatsCardsProps) {
           key={stat.label}
           className={`rounded-xl p-4 border ${
             stat.highlight
-              ? "bg-emerald-500/10 border-emerald-500/30"
-              : "bg-slate-900 border-slate-800"
+              ? "bg-primary/10 border-primary/30"
+              : "bg-surface border-slate-800"
           }`}
         >
-          <p className="text-xs text-slate-500 mb-1">{stat.label}</p>
+          <p className="text-xs text-primary-text0 mb-1">{stat.label}</p>
           <div className="flex items-baseline gap-1">
             <span
               className={`text-2xl font-bold ${
-                stat.highlight ? "text-emerald-400" : "text-white"
+                stat.highlight ? "text-primary-light" : "text-white"
               }`}
             >
               {stat.value}
             </span>
             {stat.unit && (
-              <span className="text-xs text-slate-500">{stat.unit}</span>
+              <span className="text-xs text-primary-text0">{stat.unit}</span>
             )}
           </div>
         </div>

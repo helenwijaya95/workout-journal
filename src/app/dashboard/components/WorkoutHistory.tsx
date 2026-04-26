@@ -24,16 +24,16 @@ function IntensityBar({ intensity }: { intensity: number }) {
                 ? intensity <= 3
                   ? "bg-blue-400"
                   : intensity <= 6
-                    ? "bg-emerald-400"
+                    ? "bg-primary-hover"
                     : intensity <= 8
                       ? "bg-amber-400"
                       : "bg-red-400"
-                : "bg-slate-800"
+                : "bg-card"
             }`}
           />
         ))}
       </div>
-      <span className="text-xs text-slate-500">{intensity}/10</span>
+      <span className="text-xs text-primary-text0">{intensity}/10</span>
     </div>
   );
 }
@@ -46,7 +46,7 @@ function WorkoutCard({ workout }: { workout: Workout }) {
   });
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+    <div className="bg-surface border border-slate-800 rounded-xl p-4">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <span style={{ fontSize: "24px" }} className="mt-0.5">
@@ -56,7 +56,7 @@ function WorkoutCard({ workout }: { workout: Workout }) {
             <p className="text-sm font-medium text-white">
               {getWorkoutLabel(workout.type)}
             </p>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-primary-text0 mt-0.5">
               {date} · {formatDuration(workout.duration_minutes)}
             </p>
             {workout.notes && (

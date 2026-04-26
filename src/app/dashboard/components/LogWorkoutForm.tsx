@@ -50,15 +50,17 @@ export function LogWorkoutForm({ onSuccess }: LogWorkoutFormProps) {
               onClick={() => setSelectedType(type.value)}
               className={`flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all ${
                 selectedType === type.value
-                  ? "border-emerald-500 bg-emerald-500/10"
-                  : "border-slate-800 bg-slate-900 hover:border-slate-600"
+                  ? "border-primary bg-primary/10"
+                  : "border-slate-800 bg-surface hover:border-slate-600"
               }`}
             >
               <span style={{ fontSize: "20px" }}>{type.emoji}</span>
               <span className="text-sm font-medium text-white">
                 {type.label}
               </span>
-              <span className="text-xs text-slate-500">{type.description}</span>
+              <span className="text-xs text-primary-text0">
+                {type.description}
+              </span>
             </button>
           ))}
         </div>
@@ -83,7 +85,7 @@ export function LogWorkoutForm({ onSuccess }: LogWorkoutFormProps) {
             max="300"
             required
             placeholder="45"
-            className="bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-500 transition-colors placeholder:text-slate-600"
+            className="bg-surface border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-primary transition-colors placeholder:text-slate-600"
           />
         </div>
 
@@ -101,7 +103,7 @@ export function LogWorkoutForm({ onSuccess }: LogWorkoutFormProps) {
             required
             defaultValue={today}
             max={today}
-            className="bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-500 transition-colors cursor-pointer scheme-dark"
+            className="bg-surface border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-primary transition-colors cursor-pointer scheme-dark"
           />
         </div>
       </div>
@@ -114,7 +116,7 @@ export function LogWorkoutForm({ onSuccess }: LogWorkoutFormProps) {
           </label>
           <div className="flex items-center gap-2">
             <span className="text-2xl font-bold text-white">{intensity}</span>
-            <span className="text-slate-500 text-sm">/ 10</span>
+            <span className="text-primary-text0 text-sm">/ 10</span>
           </div>
         </div>
 
@@ -126,7 +128,7 @@ export function LogWorkoutForm({ onSuccess }: LogWorkoutFormProps) {
           step="1"
           value={intensity}
           onChange={(e) => setIntensity(parseInt(e.target.value))}
-          className="w-full accent-emerald-500"
+          className="w-full accent-indigo-500"
         />
 
         <div className="flex justify-between text-xs text-slate-600">
@@ -136,7 +138,7 @@ export function LogWorkoutForm({ onSuccess }: LogWorkoutFormProps) {
         </div>
 
         {/* intensity feeling label */}
-        <p className="text-xs text-center text-slate-500">
+        <p className="text-xs text-center text-primary-text0">
           {intensity <= 3 && "Easy — recovery or light movement"}
           {intensity >= 4 &&
             intensity <= 6 &&
@@ -156,7 +158,7 @@ export function LogWorkoutForm({ onSuccess }: LogWorkoutFormProps) {
           name="notes"
           rows={3}
           placeholder="How did it feel? Anything worth remembering..."
-          className="bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-500 transition-colors placeholder:text-slate-600 resize-none"
+          className="bg-surface border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-primary transition-colors placeholder:text-slate-600 resize-none"
         />
       </div>
 
@@ -171,8 +173,8 @@ export function LogWorkoutForm({ onSuccess }: LogWorkoutFormProps) {
         disabled={loading || !selectedType}
         className={`py-4 rounded-xl font-bold text-sm transition-all ${
           loading || !selectedType
-            ? "bg-slate-800 text-slate-500 cursor-not-allowed"
-            : "bg-emerald-500 text-white hover:bg-emerald-400 active:scale-95"
+            ? "bg-card text-primary-text0 cursor-not-allowed"
+            : "bg-primary text-white hover:bg-primary-hover active:scale-95"
         }`}
       >
         {loading ? "Saving..." : "Log workout"}

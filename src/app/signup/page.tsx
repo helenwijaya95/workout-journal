@@ -19,7 +19,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-navy flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-white mb-2">
@@ -41,7 +41,7 @@ export default function SignUpPage() {
               type="text"
               required
               placeholder="Your name"
-              className="bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-500 transition-colors placeholder:text-slate-600"
+              className="bg-surface border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-primary transition-colors placeholder:text-slate-600"
             />
           </div>
 
@@ -55,7 +55,7 @@ export default function SignUpPage() {
               type="email"
               required
               placeholder="you@example.com"
-              className="bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-500 transition-colors placeholder:text-slate-600"
+              className="bg-surface border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-primary transition-colors placeholder:text-slate-600"
             />
           </div>
 
@@ -70,7 +70,7 @@ export default function SignUpPage() {
               required
               minLength={6}
               placeholder="At least 6 characters"
-              className="bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-500 transition-colors placeholder:text-slate-600"
+              className="bg-surface border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-primary transition-colors placeholder:text-slate-600"
             />
           </div>
 
@@ -85,19 +85,19 @@ export default function SignUpPage() {
             disabled={loading}
             className={`mt-2 py-3 rounded-lg font-bold text-sm transition-all ${
               loading
-                ? "bg-slate-800 text-slate-500 cursor-not-allowed"
-                : "bg-emerald-500 text-white hover:bg-emerald-400"
+                ? "bg-card text-primary-text0 cursor-not-allowed"
+                : "bg-primary text-white hover:bg-primary-hover"
             }`}
           >
             {loading ? "Creating account..." : "Create account"}
           </button>
         </form>
 
-        <p className="text-center text-slate-500 text-sm mt-6">
+        <p className="text-center text-primary-text0 text-sm mt-6">
           Already have an account?{" "}
           <Link
             href="/login"
-            className="text-emerald-400 hover:text-emerald-300"
+            className="text-primary-light hover:text-primary-light"
           >
             Sign in
           </Link>

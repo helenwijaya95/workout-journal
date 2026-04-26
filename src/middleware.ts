@@ -34,11 +34,20 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute =
     request.nextUrl.pathname.startsWith('/dashboard')
 
+  const isPublicRoute =
+    request.nextUrl.pathname === '/'
+
+
   if (!session && isProtectedRoute) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
   if (session && isAuthPage) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
+  // if signed in and on landing page, go to dashboard
+  if (session && isPublicRoute) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 

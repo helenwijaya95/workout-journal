@@ -51,7 +51,7 @@ export default async function DashboardPage() {
   });
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
+    <main className="min-h-screen bg-navy text-white">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -74,7 +74,7 @@ export default async function DashboardPage() {
 
         <StatsCards currentWeek={currentWeek} allWorkouts={workouts ?? []} />
         {weekGroups.length > 0 && (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+          <div className="bg-surface border border-slate-800 rounded-2xl p-6 mb-6">
             <WorkoutChart weekGroups={weekGroups} />
           </div>
         )}
