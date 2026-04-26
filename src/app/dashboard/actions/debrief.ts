@@ -3,9 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { Workout } from '@/types/database'
-import { getWeekStart, getWeekEnd, getWorkoutLabel } from '@/lib/workout-utils'
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+import { getWeekEnd, getWorkoutLabel } from '@/lib/workout-utils'
 
 function buildPrompt(workouts: Workout[], weekStart: string): string {
   const weekEnd = getWeekEnd(weekStart)
@@ -130,7 +128,7 @@ export async function generateDebrief(weekStart: string) {
 
 
   // verify API key exists before calling OpenAI
-  if (!process.env.OPENAI_API_KEY) {
+  if (!process.env.GEMINI_API_KEY) {
     return { error: 'Gemini API key is not configured' }
   }
 
