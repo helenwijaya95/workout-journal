@@ -25,18 +25,23 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  // use getSession instead of getUser in middleware
+  // getUser makes a network request to Supabase on every request
+  // which is too slow and sometimes fails in edge runtime
+  const { data: { session } } = await supabase.auth.getSession()
 
-  // if user is not signed in and trying to access protected routes, redirect to login
-  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+  const isAuthPage =
+    request.nextUrl.pathname === '/login' ||
+    request.nextUrl.pathname === '/signup'
+
+  const isProtectedRoute =
+    request.nextUrl.pathname.startsWith('/dashboard')
+
+  if (!session && isProtectedRoute) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // if user is signed in and tries to access auth pages, redirect to dashboard
-  if (user && (
-    request.nextUrl.pathname === '/login' ||
-    request.nextUrl.pathname === '/signup'
-  )) {
+  if (session && isAuthPage) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
@@ -44,5 +49,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 }
