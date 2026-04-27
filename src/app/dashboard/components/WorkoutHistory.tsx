@@ -7,10 +7,7 @@ import {
   formatDuration,
 } from "@/lib/workout-utils";
 import { Workout } from "@/types/database";
-
-interface WorkoutHistoryProps {
-  weekGroups: WeekGroup[];
-}
+import { EditWorkoutModal } from "./EditWorkoutModal";
 
 function IntensityBar({ intensity }: { intensity: number }) {
   return (
@@ -24,21 +21,39 @@ function IntensityBar({ intensity }: { intensity: number }) {
                 ? intensity <= 3
                   ? "bg-blue-400"
                   : intensity <= 6
-                    ? "bg-primary-hover"
+                    ? "bg-indigo-400"
                     : intensity <= 8
                       ? "bg-amber-400"
                       : "bg-red-400"
-                : "bg-card"
+                : "bg-slate-800"
             }`}
           />
         ))}
       </div>
-      <span className="text-xs text-primary-text0">{intensity}/10</span>
+      <span className="text-xs text-slate-500">{intensity}/10</span>
     </div>
   );
 }
+function getAccentColour(type: Workout["type"]): string {
+  switch (type) {
+    case "strength":
+      return "#6366f1"; // indigo
+    case "cardio":
+      return "#10b981"; // green
+    case "group_fitness":
+      return "#f59e0b"; // amber
+    case "sports":
+      return "#3b82f6"; // blue
+    case "other":
+      return "#94a3b8"; // slate
+    default:
+      return "#6366f1";
+  }
+}
 
 function WorkoutCard({ workout }: { workout: Workout }) {
+  const [showEdit, setShowEdit] = useState(false);
+
   const date = new Date(workout.workout_date).toLocaleDateString("en-SG", {
     weekday: "short",
     day: "numeric",
@@ -46,31 +61,55 @@ function WorkoutCard({ workout }: { workout: Workout }) {
   });
 
   return (
-    <div className="bg-surface border border-slate-800 rounded-xl p-4">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <span style={{ fontSize: "24px" }} className="mt-0.5">
-            {getWorkoutEmoji(workout.type)}
-          </span>
-          <div>
-            <p className="text-sm font-medium text-white">
-              {getWorkoutLabel(workout.type)}
-            </p>
-            <p className="text-xs text-primary-text0 mt-0.5">
-              {date} · {formatDuration(workout.duration_minutes)}
-            </p>
-            {workout.notes && (
-              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                "{workout.notes}"
+    <>
+      <div
+        className="p-4 transition-all"
+        style={{
+          background: "var(--color-card)",
+          borderLeft: `3px solid ${getAccentColour(workout.type)}`,
+          borderRadius: "0 12px 12px 0",
+        }}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <span style={{ fontSize: "24px" }} className="mt-0.5">
+              {getWorkoutEmoji(workout.type)}
+            </span>
+            <div>
+              <p className="text-sm font-medium text-white">
+                {getWorkoutLabel(workout.type)}
               </p>
-            )}
+              <p className="text-xs text-slate-500 mt-0.5">
+                {date} · {formatDuration(workout.duration_minutes)}
+              </p>
+              {workout.notes && (
+                <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                  "{workout.notes}"
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col items-end gap-2 shrink-0">
+            <IntensityBar intensity={workout.intensity} />
+            <button
+              onClick={() => setShowEdit(true)}
+              className="text-xs text-slate-400 hover:text-white transition-colors px-2 py-1 rounded-md border border-border-custom hover:border-border-hover cursor-pointer"
+            >
+              Edit
+            </button>
           </div>
         </div>
-        <div className="shrink-0">
-          <IntensityBar intensity={workout.intensity} />
-        </div>
       </div>
-    </div>
+
+      {showEdit && (
+        <EditWorkoutModal
+          workout={workout}
+          onClose={() => setShowEdit(false)}
+          onSuccess={() => setShowEdit(false)}
+        />
+      )}
+    </>
   );
 }
 
