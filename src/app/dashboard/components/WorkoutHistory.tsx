@@ -8,7 +8,9 @@ import {
 } from "@/lib/workout-utils";
 import { Workout } from "@/types/database";
 import { EditWorkoutModal } from "./EditWorkoutModal";
-
+interface WorkoutHistoryProps {
+  weekGroups: WeekGroup[];
+}
 function IntensityBar({ intensity }: { intensity: number }) {
   return (
     <div className="flex items-center gap-2">
