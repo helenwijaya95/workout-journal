@@ -28,7 +28,7 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="max-w-3xl mx-auto px-6 pt-20 pb-24 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-slate-800 text-xs font-medium text-slate-400 mb-8">
-          <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
+          <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
           AI-powered workout analysis
         </div>
 

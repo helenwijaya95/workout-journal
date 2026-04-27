@@ -43,7 +43,7 @@ Rules:
 - Return ONLY the JSON object, no markdown, no preamble`
 }
 
-// add this retry helper at the top of the file, outside the action
+// retry helper
 async function callGeminiWithRetry(
   prompt: string,
   maxRetries: number = 3
