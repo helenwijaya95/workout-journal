@@ -36,8 +36,6 @@ Built for people who train consistently but don't have a personal trainer — ru
 - Weekly stats — sessions, total minutes, average intensity, total hours
 - Bar chart showing session consistency over the last 8 weeks
 - AI weekly debrief — highlights, overtraining flags, and next week suggestion
-- Stale debrief detection — prompts regeneration when new workouts are added
-- Edit and delete workouts with confirmation
 - Row Level Security — users can only access their own data
 - PWA — installable on iOS and Android, opens full screen
 - Responsive design — mobile first
@@ -57,9 +55,6 @@ Database operations run as Next.js Server Actions — no separate API layer need
 
 **Gemini retry with exponential backoff**
 The AI debrief action retries up to 3 times on recoverable errors (429, model busy, 503) with 1s, 2s, 4s delays. Non-recoverable errors (invalid API key, 404) throw immediately. This handles Gemini's free tier rate limits gracefully without user-visible failures.
-
-**Stale debrief detection**
-After generating a debrief, `total_sessions` is stored alongside the AI analysis. On load, the app compares this against the current workout count for that week. If they differ, a warning banner prompts the user to regenerate — preventing stale AI insights without auto-regenerating on every load (which would be expensive).
 
 **Upsert over delete + insert**
 Debrief regeneration uses Supabase's `.upsert()` with `onConflict: 'user_id,week_start'` instead of deleting the old row and inserting a new one. This eliminates the race condition where a duplicate key error could occur if the delete hadn't completed before the insert.
