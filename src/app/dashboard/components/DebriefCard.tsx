@@ -135,9 +135,14 @@ export function DebriefCard({ weekGroup, existingDebrief }: DebriefCardProps) {
             <button
               onClick={() => handleGenerate(true)}
               disabled={loading}
-              className="text-xs text-slate-600 hover:text-slate-400 transition-all self-end mt-2"
+              className="text-xs font-medium transition-all self-end mt-2 px-3 py-1.5 rounded-lg border"
+              style={{
+                color: loading ? "#475569" : "#94a3b8",
+                borderColor: "var(--color-border)",
+                background: "var(--color-surface)",
+              }}
             >
-              {loading ? "Regenerating..." : "Regenerate debrief"}
+              {loading ? "Regenerating..." : "↺ Regenerate debrief"}
             </button>
           )}
         </div>

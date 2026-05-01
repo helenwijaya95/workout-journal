@@ -41,10 +41,16 @@ export async function signOut() {
 
 export async function signInAsDemo() {
   const supabase = await createClient()
+  const email = process.env.DEMO_ACCOUNT_EMAIL
+  const password = process.env.DEMO_ACCOUNT_PASSWORD
+
+  if(!email || !password){
+    return { error: 'Demo account not configured'}
+  }
 
   const {error} = await supabase.auth.signInWithPassword({
-    email: process.env.DEMO_ACCOUNT_EMAIL,
-    password: process.env.DEMO_ACCOUNT_PASSWORD!,
+    email,
+    password
   })
 
   if (error) return {error: error.message}

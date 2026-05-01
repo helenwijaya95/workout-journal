@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { signIn, signInAsDemo } from "@/app/auth/actions";
+import { signIn } from "@/app/auth/actions";
 import Link from "next/link";
+import { DemoLoginButton } from "@/components/DemoLoginButton";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -82,34 +83,22 @@ export default function LoginPage() {
           >
             Sign up
           </Link>
-          <div className="mt-4">
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="flex-1 h-px"
-                style={{ background: "var(--color-border)" }}
-              />
-              <span className="text-xs text-slate-600">or</span>
-              <div
-                className="flex-1 h-px"
-                style={{ background: "var(--color-border)" }}
-              />
-            </div>
-
-            <form action={signInAsDemo}>
-              <button
-                type="submit"
-                className="w-full py-3 rounded-xl text-sm font-medium transition-all border"
-                style={{
-                  background: "var(--color-surface)",
-                  borderColor: "var(--color-border)",
-                  color: "#94a3b8",
-                }}
-              >
-                Try the demo — no signup needed ✨
-              </button>
-            </form>
-          </div>
         </p>
+
+        <div className="mt-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div
+              className="flex-1 h-px"
+              style={{ background: "var(--color-border)" }}
+            />
+            <span className="text-xs text-slate-600">or</span>
+            <div
+              className="flex-1 h-px"
+              style={{ background: "var(--color-border)" }}
+            />
+          </div>
+          <DemoLoginButton />
+        </div>
       </div>
     </main>
   );

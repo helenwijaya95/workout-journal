@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { signInAsDemo } from "@/app//auth/actions";
+import { DemoLoginButton } from "@/components/DemoLoginButton";
 
 export default function LandingPage() {
   return (
@@ -44,33 +44,24 @@ export default function LandingPage() {
           on next week — no personal trainer needed.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        {/* Hero buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mt-10">
           <Link
             href="/signup"
-            className="bg-primary hover:bg-primary-hover text-white px-8 py-4 rounded-xl font-bold text-sm transition-all active:scale-95"
+            className="w-full sm:w-auto text-center text-white px-8 py-4 rounded-xl font-bold text-sm transition-all active:scale-95"
+            style={{ background: "var(--color-primary)" }}
           >
             Start tracking free
           </Link>
-          <Link
-            href="/login"
-            className="bg-surface hover:bg-card border border-slate-800 text-slate-300 px-8 py-4 rounded-xl font-bold text-sm transition-all"
-          >
-            Sign in
-          </Link>
-          <form action={signInAsDemo}>
-            <button
-              type="submit"
-              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-sm transition-all border"
-              style={{
-                background: "var(--color-surface)",
-                borderColor: "var(--color-border)",
-                color: "#94a3b8",
-              }}
-            >
-              Try the demo ✨
-            </button>
-          </form>
+          <div className="w-full sm:w-auto">
+            <DemoLoginButton />
+          </div>
         </div>
+
+        {/* reassurance copy */}
+        <p className="text-xs text-slate-600 mt-4">
+          Free to use · No credit card · Demo available
+        </p>
       </section>
 
       {/* Features */}
