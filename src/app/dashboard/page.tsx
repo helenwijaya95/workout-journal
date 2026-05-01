@@ -9,8 +9,18 @@ import {
   getWeekStart,
   getWeekEnd,
 } from "@/lib/workout-utils";
+import { Suspense } from "react";
+import { DashboardSkeleton } from "./components/DashboardSkeleton";
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<DashboardSkeleton />}>
+      <DashboardContent />
+    </Suspense>
+  );
+}
+
+async function DashboardContent() {
   const supabase = await createClient();
   const {
     data: { user },
