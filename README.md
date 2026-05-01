@@ -2,7 +2,7 @@
 
 A full-stack workout tracking app with AI-powered weekly training analysis. Log your sessions, visualise your consistency, and get personalised coaching insights — no personal trainer needed.
 
-**Live demo:** https://workout-journal-khaki.vercel.app
+**Live demo:** https://trainlog-ai.vercel.app
 
 ---
 
