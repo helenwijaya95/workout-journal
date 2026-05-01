@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { Workout } from '@/types/database'
 import { getWeekEnd, getWorkoutLabel } from '@/lib/workout-utils'
+import { getUser } from '@/lib/guards'
 
 function buildPrompt(workouts: Workout[], weekStart: string): string {
   const weekEnd = getWeekEnd(weekStart)
@@ -99,9 +100,8 @@ async function callGeminiWithRetry(
 
 export async function generateDebrief(weekStart: string) {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) return { error: 'Not authenticated' }
+  const {user, errorAuth} = await getUser()
+  if(errorAuth || !user) return { error: errorAuth ?? 'Not authenticated'}
 
   // check if debrief already exists
   const { data: existing } = await supabase
