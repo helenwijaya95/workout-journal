@@ -69,7 +69,7 @@ export function WorkoutChart({ weekGroups }: WorkoutChartProps) {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-medium text-white">Sessions per week</h3>
-        <span className="text-xs text-primary-text0">
+        <span className="text-xs text-slate-400">
           Last {chartData.length} weeks
         </span>
       </div>
@@ -123,11 +123,11 @@ export function WorkoutChart({ weekGroups }: WorkoutChartProps) {
       <div className="flex items-center gap-4 mt-2 justify-end">
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm bg-primary" />
-          <span className="text-xs text-primary-text0">Current week</span>
+          <span className="text-xs text-slate-400">Current week</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm bg-slate-700 border border-slate-600" />
-          <span className="text-xs text-primary-text0">Past weeks</span>
+          <span className="text-xs text-slate-400">Past weeks</span>
         </div>
       </div>
     </div>
