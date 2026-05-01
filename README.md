@@ -77,8 +77,8 @@ Debrief regeneration uses Supabase's `.upsert()` with `onConflict: 'user_id,week
 ### Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/workout-journal.git
-cd workout-journal
+git clone https://github.com/helenwijaya95/trainlog
+cd trainlog
 npm install
 ```
 
