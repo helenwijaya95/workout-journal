@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { signInAsDemo } from "@/app//auth/actions";
 
 export default function LandingPage() {
   return (
@@ -56,6 +57,19 @@ export default function LandingPage() {
           >
             Sign in
           </Link>
+          <form action={signInAsDemo}>
+            <button
+              type="submit"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-sm transition-all border"
+              style={{
+                background: "var(--color-surface)",
+                borderColor: "var(--color-border)",
+                color: "#94a3b8",
+              }}
+            >
+              Try the demo ✨
+            </button>
+          </form>
         </div>
       </section>
 

@@ -38,3 +38,15 @@ export async function signOut() {
   await supabase.auth.signOut()
   redirect('/login')
 }
+
+export async function signInAsDemo() {
+  const supabase = await createClient()
+
+  const {error} = await supabase.auth.signInWithPassword({
+    email: process.env.DEMO_ACCOUNT_EMAIL,
+    password: process.env.DEMO_ACCOUNT_PASSWORD!,
+  })
+
+  if (error) return {error: error.message}
+  redirect('/dashboard')
+}
